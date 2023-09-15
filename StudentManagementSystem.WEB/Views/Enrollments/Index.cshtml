@@ -1,0 +1,44 @@
+﻿@model IList<Enrollment>
+
+@{
+    ViewData["Title"] = "Enrollment List";
+}
+
+<a asp-controller="Enrollments" asp-action="Create" class="btn btn-primary mb-3">Create Enrollment</a>
+
+@* <div>
+    @await Component.InvokeAsync("CourseCount")
+</div>
+ *@
+<vc:course-count></vc:course-count>
+
+
+<table class="table table-borderless table-responsive table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Student</th>
+            <th>Grade</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var enrollment in Model)
+        {
+            <tr>
+                <td>@enrollment.Course.Title</td>
+                <td>@($"{enrollment.Student.FirstName} {enrollment.Student.LastName}")</td>
+                <td>@(!enrollment.Grade.HasValue ? "No grade" : enrollment.Grade)</td>
+                @if (!enrollment.Grade.HasValue)
+                {
+                    <td><a asp-controller="Enrollments" asp-action="AddGrade"
+                        asp-route-id="@enrollment.Id" class="btn btn-primary">Add Grade</a></td>
+                }
+                else
+                {
+                    <td><button type="button" class="btn btn-primary" disabled>Add Grade</button></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
